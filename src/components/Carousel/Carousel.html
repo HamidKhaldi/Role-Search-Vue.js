@@ -1,0 +1,56 @@
+<div id="srCarousel">
+    <div id="srHomeCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators sr_carousel-indicators">
+            <a class="sr_carousel-indicators-btn-cont active" data-bs-target="#srHomeCarousel" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1">
+                <div class="sr_carousel-indicators-btn"></div>
+            </a>
+            <a class="sr_carousel-indicators-btn-cont"  data-bs-target="#srHomeCarousel" data-bs-slide-to="1" aria-label="Slide 2">
+                <div class="sr_carousel-indicators-btn"></div>
+            </a>
+            <a class="sr_carousel-indicators-btn-cont"  data-bs-target="#srHomeCarousel" data-bs-slide-to="2" aria-label="Slide 3">
+                <div class="sr_carousel-indicators-btn"></div>
+            </a>
+            <a class="sr_carousel-indicators-btn-cont"  data-bs-target="#srHomeCarousel" data-bs-slide-to="3" aria-label="Slide 4">
+                <div class="sr_carousel-indicators-btn"></div>
+            </a> 
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item sr_carousel-item active">
+            <img  v-if="!mobileView" src="../../assets/Images/Banner_Application-Process.png" class="sr_carousel-img d-block" alt="banner aplication">
+            <img v-if="mobileView" src="../../assets/Images/Banner-Application-Mobile.png" class="sr_carousel-img d-block" alt="banner aplication">
+            <div class="carousel-caption sr_carousel-caption d-md-block">
+              <h5 class="sr_carousel-caption-header">How to apply</h5>
+              <p class="sr_carousel-caption-para">The support, advice, and tips you need to apply to our programmes.</p>
+              <a href="https://www.ey.com/en_uk/careers/students/application-process" target="_blank" class="sr_carousel-caption-link">Learn more</a>
+            </div>
+          </div>
+          <div class="carousel-item sr_carousel-item">
+            <img v-if="!mobileView" src="../../assets/Images/Banner-student-events.png" class="sr_carousel-img d-block" alt="banner student events">
+            <img v-if="mobileView" src="../../assets/Images/Banner-Student-Mobile.png" class="sr_carousel-img d-block" alt="banner student events">
+            <div class="carousel-caption sr_carousel-caption d-md-block">
+                <h5 class="sr_carousel-caption-header">Student events</h5>
+                <p class="sr_carousel-caption-para">Meet our team at a local event or online.</p>
+                <a href="https://www.ey.com/en_uk/careers/students/events-and-contacts" target="_blank" class="sr_carousel-caption-link">Sign up to an event</a>
+            </div>
+          </div>
+          <div class="carousel-item sr_carousel-item">
+            <img v-if="!mobileView" src="../../assets/Images/Banner_FAQs.png" class="sr_carousel-img d-block" alt="banner faqs">
+            <img v-if="mobileView" src="../../assets/Images/Banner-FAQs-Mobile.png" class="sr_carousel-img d-block" alt="banner faqs">
+            <div class="carousel-caption sr_carousel-caption d-md-block">
+                <h5 class="sr_carousel-caption-header">FAQs</h5>
+                <p class="sr_carousel-caption-para">Everything from applying to and joining EY.</p>
+                <a href="https://www.ey.com/en_uk/careers/students/faqs" target="_blank" class="sr_carousel-caption-link">Find the answer</a>
+            </div>
+          </div>
+          <div class="carousel-item sr_carousel-item">
+            <img v-if="!mobileView" src="../../assets/Images/Banner_Register.png" class="sr_carousel-img d-block" alt="banner register">
+            <img v-if="mobileView" src="../../assets/Images/Banner-Register-Mobile.png" class="sr_carousel-img d-block" alt="banner register">
+            <div class="carousel-caption sr_carousel-caption d-md-block">
+                <h5 class="sr_carousel-caption-header">Register your interest</h5>
+                <p class="sr_carousel-caption-para">Receive notifications for reopened roles.</p>
+                <a href="https://eycareers.ambertrack.global/registerinterest2023/CandidateLogin.aspx" target="_blank" class="sr_carousel-caption-link">Register Now</a>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

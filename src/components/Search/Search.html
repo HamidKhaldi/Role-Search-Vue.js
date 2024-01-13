@@ -1,0 +1,209 @@
+<div class="sr_search-section">
+    <h3 class="sr_search-heading">
+        Start your EY Adventure. Explore our programmes below and get your career off to a brilliant start.
+    </h3>
+    <div class="sr_search-input-cont">
+        <input v-model="searchQuery" class="sr_search-input" type="search" name="search" placeholder="Search opportunities by keyword(s)" />
+        <a class="sr_search-link" type="button" @click="findSearch">
+            <img src="../../assets/Images/search-black.png" alt="search img" class="sr_search-img">
+        </a>
+        <a @click="clearSearch" class="sr_search-clear-link">Clear All</a>
+        <div class="sr_search-error-message full-width" v-show="searchError.length > 0 && isMobile">
+            <i class="sr_search-error-message-icon"></i>
+            <p class="sr_search-error-message-text">{{searchError}}</p>
+        </div>
+        <div class="sr_search-error-message" v-show="searchError.length > 0 && !isMobile">
+            <i class="sr_search-error-message-icon"></i>
+            <p class="sr_search-error-message-text">{{searchError}}</p>
+        </div>
+        <ul v-if="filteredCapabilities.length" class="sr_search-result-list"
+            style="background-color: #fff; padding: 20px; list-style-type: none">
+            <li v-for="item in filteredCapabilities" :key="item" @click="selectSearchItem(item)"
+                class="sr_search-result-list-item" v-html="getFormattedListItem(item)"></li>
+        </ul>
+    </div>    
+</div>
+<div class="sr_search-results-section">
+    <div class="sr_filter-cont">
+        <div v-if="mobileView">
+            <div class="sr_vacancies-cont">Vacancies: <span>{{filteredVacancyArr.length}}</span></div>
+            <div class="accordion sr_panel-accordion" id="panelAccordion">
+                <div class="accordion-item">
+                  <p class="accordion-header sr_panel-accordion-header" id="panelHeadingOne">
+                    <button @click="changeHeaderMsg()" class="accordion-button sr_panel-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelOne" aria-expanded="false" aria-controls="panelOne">
+                      <p class="sr_accrodion-header-para">{{panelMessage}}</p>
+                    </button>
+                  </p> 
+                  <div id="panelOne" class="accordion-collapse sr_panel-accordion-collapse collapse" aria-labelledby="panelHeadingOne" data-bs-parent="#panelAccordion">
+                    <div class="accordion-body sr_panel-accordion-body">
+                        <ul class="sr_filter-list">
+                            <li class="sr_filter-list--item dropdown">
+                              <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="programme" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Programme
+                              </a>
+                              <ul class="sr_filter-dropdown dropdown-menu" aria-labelledby="programme">
+                                  <li @click="getFilterVal(progOption, 'Programme');" v-for="(progOption, key, index) in orderBy(progOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item"  value="Business Academy">
+                                      <input :id ="'prog-' + (key+1)" type="radio" class="sr_filter-dropdown-input" name="Programme" :value="progOption">
+                                      <label class="form-check-label sr_filter-form-check-label" for="programme">{{progOption}}</label>
+                                  </li>
+                              </ul>
+                            </li>
+                            <li class="sr_filter-list--item dropdown">
+                              <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="serviceLine" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Business area
+                              </a>
+                              <ul class="sr_filter-dropdown dropdown-menu"  name="ServiceLine" aria-labelledby="serviceLine">
+                                  <li @click="getFilterVal(slOption, 'ServiceLine');" v-for="(slOption, key, index) in orderBy(slOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                                      <input :id ="'sl-' + (key+1)" type="checkbox" class="sr_filter-dropdown-input" name="ServiceLine" :value="slOption">
+                                      <label class="form-check-label sr_filter-form-check-label" for="serviceLine">{{slOption}}</label>
+                                  </li>
+                              </ul>
+                            </li>
+                            <li class="sr_filter-list--item dropdown">
+                              <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="subServiceLine" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Sub-business area
+                              </a>
+                              <ul class="sr_filter-dropdown dropdown-menu"  name="SubServiceLine" aria-labelledby="subServiceLine">
+                                  <li @click="getFilterVal(sslOption, 'SubServiceLine');" v-for="(sslOption, key, index) in orderBy(sslOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                                      <input :id ="'ssl-' + (key+1)" type="checkbox" class="sr_filter-dropdown-input" name="SubServiceLine" :value="sslOption">
+                                      <label class="form-check-label sr_filter-form-check-label" for="subServiceLine">{{sslOption}}</label>
+                                  </li>
+                              </ul>  
+                            </li>
+                            <li class="sr_filter-list--item dropdown">
+                                <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="location" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Location
+                                </a>
+                                <ul class="sr_filter-dropdown dropdown-menu" name="location" aria-labelledby="location">
+                                    <li @click="getFilterVal(locOption, 'Location');" v-for="(locOption, key, index) in orderBy(locOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                                        <input :id ="'loc-' + (key+1)" type="radio" class="sr_filter-dropdown-input" name="location" :value="locOption">
+                                        <label class="form-check-label sr_filter-form-check-label" for="location">{{locOption}}</label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="sr_filter-list--item dropdown">
+                              <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="startDate" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Programme Start Date
+                              </a>
+                              <ul class="sr_filter-dropdown dropdown-menu"  name="StartDate" aria-labelledby="startDate">
+                                  <li @click="getFilterVal(sdOption, 'StartDate');" v-for="(sdOption, key, index) in orderBy(sdOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                                      <input :id ="'sd-' + (key+1)" type="checkbox" class="sr_filter-dropdown-input" name="StartDate" :value="sdOption">
+                                      <label class="form-check-label sr_filter-form-check-label" for="startDate">{{sdOption}}</label>
+                                  </li>
+                              </ul>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="!mobileView">
+            <p class="sr_filter-heading">Filter:</p>
+            <ul class="sr_filter-list">
+              <li class="sr_filter-list--item dropdown">
+                <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="programme" data-bs-toggle="dropdown" aria-expanded="false">
+                    Programme
+                </a>
+                <ul class="sr_filter-dropdown dropdown-menu" aria-labelledby="programme">
+                    <li @click="getFilterVal(progOption, 'Programme');" v-for="(progOption, key, index) in orderBy(progOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item"  value="{{progOption}}">
+                        <input :id ="'prog-' + (key+1)" type="radio" class="sr_filter-dropdown-input" name="Programme" :value="progOption">
+                        <label class="form-check-label sr_filter-form-check-label" for="programme">{{progOption}}</label>
+                    </li>
+                </ul>
+              </li>
+              <li class="sr_filter-list--item dropdown">
+                <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="serviceLine" data-bs-toggle="dropdown" aria-expanded="false">
+                    Business area
+                </a>
+                <ul class="sr_filter-dropdown dropdown-menu"  name="ServiceLine" aria-labelledby="serviceLine">
+                    <li @click="getFilterVal(slOption, 'ServiceLine');" v-for="(slOption, key, index) in orderBy(slOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                        <input :id ="'sl-' + (key+1)" type="checkbox" class="sr_filter-dropdown-input" name="ServiceLine" :value="slOption">
+                        <label class="form-check-label sr_filter-form-check-label" for="serviceLine">{{slOption}}</label>
+                    </li>
+                </ul>
+              </li>
+              <li class="sr_filter-list--item dropdown">
+                <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="subServiceLine" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sub-business area
+                </a>
+                <ul class="sr_filter-dropdown dropdown-menu"  name="SubServiceLine" aria-labelledby="subServiceLine">
+                    <li @click="getFilterVal(sslOption, 'SubServiceLine');" v-for="(sslOption, key, index) in orderBy(sslOptionsArr, true)"  class="sr_filter-dropdown--item dropdown-item">
+                        <input :id ="'ssl-' + (key+1)" type="checkbox" class="sr_filter-dropdown-input" name="SubServiceLine" :value="sslOption">
+                        <label class="form-check-label sr_filter-form-check-label" for="subServiceLine">{{sslOption}}</label>
+                    </li>
+                </ul>  
+              </li>
+              <li class="sr_filter-list--item dropdown">
+                <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="location" data-bs-toggle="dropdown" aria-expanded="false">
+                    Location
+                </a>
+                <ul class="sr_filter-dropdown dropdown-menu" aria-labelledby="location">
+                    <li @click="getFilterVal(locOption, 'Location');" v-for="(locOption, key, index) in orderBy(locOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                        <input :id ="'loc-' + (key+1)" type="radio" class="sr_filter-dropdown-input" name="Location" :value="locOption">
+                        <label class="form-check-label sr_filter-form-check-label" for="Location">{{locOption}}</label>
+                    </li>
+                </ul>
+              </li>
+              <li class="sr_filter-list--item dropdown">
+                <a class="btn dropdown-toggle sr_filter-list--toggle" href="#" role="button" id="startDate" data-bs-toggle="dropdown" aria-expanded="false">
+                    Programme Start Date
+                </a>
+                <ul class="sr_filter-dropdown dropdown-menu"  name="startDate" aria-labelledby="startDate">
+                    <li @click="getFilterVal(sdOption, 'StartDate');" v-for="(sdOption, key, index) in orderBy(sdOptionsArr, true)" class="sr_filter-dropdown--item dropdown-item">
+                        <input :id ="'sd-' + (key+1)" type="checkbox" class="sr_filter-dropdown-input" name="StartDate" :value="sdOption">
+                        <label class="form-check-label sr_filter-form-check-label" for="startDate">{{sdOption}}</label>
+                    </li>
+                </ul>
+              </li>
+            </ul>
+        </div>
+        <ul class="sr_selected-filter-list">
+            <li v-for="(filter, key, index) in filterArr" @click="getFilterVal(filter.value, filter.type)" class="sr_selected-filter-list--item">{{filter.value}}<img src="../../assets/Images/close.png" alt="times sign" class="sr_selected-filter-list--img"></li>
+        </ul>
+        <div v-if="!mobileView" class="sr_vacancies-cont">Vacancies: <span>{{filteredVacancyArr.length}}</span></div>
+    </div>
+    <ul class="sr_search-results-list">
+        <li :id ="'vac-' + (key+1)" v-for="(vacancy, key, index) in filteredVacancyArr.slice(0, vacsToShow)" :key="index" class="sr_search-results-list--item">
+            <div @click="hideOverlay('vac-'+ (key+1))" class="sr_search-results-list--close-link"></div>
+            <div class="sr_search-results-list--card" @click="showOverlay('vac-'+ (key+1))">
+                <h5 class="sr_search-results-list--heading">{{vacancy.Programme}}</h5>
+                <div class="sr_search-results-list--sub-heading">{{vacancy.ServiceLine}} | {{vacancy.Location}}</div>
+                <div v-if="!vacancy.Intro" class="sr_search-results-list--intro">Develop skills for an exciting career in Law and discover the future you want to build</div>
+                <div v-if="vacancy.Intro" class="sr_search-results-list--intro" v-html="vacancy.Intro"></div>
+                <div class="sr_search-results-list--arrow"></div>
+            </div>
+            <div class="sr_search-results-list--overlay">
+                <div class="sr_search-results-list--overlay-left">
+                    <div class="sr_search-results-list--info-list-cont">
+                        <div class="sr_search-results-list--border-top"></div>
+                        <ul class="sr_search-results-list--info-list">
+                            <li class="sr_search-results-list--info-list--item">{{vacancy.Programme}}</li>
+                            <li class="sr_search-results-list--info-list--item">{{vacancy.ServiceLine}}</li>
+                            <li class="sr_search-results-list--info-list--item">{{vacancy.SubServiceLine}}</li>
+                            <li class="sr_search-results-list--info-list--item">{{vacancy.Location}}</li>
+                            <li class="sr_search-results-list--info-list--item">{{vacancy.StartDate}}</li>
+                        </ul>
+                        <div class="sr_search-results-list--border-bottom"></div>
+                    </div>
+                    <ul class="sr_search-results-list--external-list">
+                        <li class="sr_search-results-list--external-list--item">
+                            <a v-bind:href="vacancy.IntakeUrl" class="sr_search-results-list--external-list--link">Apply Now</a>
+                        </li>
+                        <li class="sr_search-results-list--external-list--item">
+                            <a href="" class="sr_search-results-list--external-list--link">Explore more on the role</a>
+                        </li>
+                    </ul>                  
+                </div>
+                <div v-if="!vacancy.Description" class="sr_search-results-list--overlay-right">
+                    If you’re in your penultimate year at university and your course includes a placement year, this programme is for you.
+                    You’ll build a career that’s yours to own. With infinite opportunities to lead, learn and transform, we’ll empower you to build a world as unique as you. You'll be:
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit neque, unde quaerat fugit fuga repellendus nulla dignissimos ipsam adipisci officiis et qui voluptate quasi, est exercitationem, voluptatum voluptas ad? Eius, explicabo! Impedit excepturi ipsa nam nesciunt delectus autem, consectetur officia veritatis saepe numquam aliquid velit voluptates earum aliquam illum id sunt odio eum esse ab incidunt nisi est pariatur. Aliquid, quaerat nulla! Ipsam necessitatibus at eaque animi laborum dignissimos dolores nam quibusdam ducimus. Ratione minus voluptate ducimus maxime nam, cum obcaecati tenetur aliquid magni necessitatibus, vel adipisci laboriosam nostrum. Corporis eius deleniti minus sapiente quidem deserunt fugit ullam hic vel ex qui praesentium necessitatibus doloremque doloribus consequuntur dolorum similique, totam suscipit impedit alias cupiditate laboriosam. Quae, nihil aspernatur! Harum itaque illo ea, cum fugit cumque quidem soluta placeat illum laborum? Rem alias, ea accusamus doloremque itaque, quod iusto officiis, molestiae explicabo neque modi est vero vel totam quibusdam nobis fuga suscipit quasi optio nemo dolore sit natus numquam? Fugiat accusantium quasi tenetur laborum iste asperiores quos sint qui inventore praesentium odit voluptate quidem nisi ea aut commodi placeat fugit rerum, minima soluta sapiente adipisci autem. Nobis beatae obcaecati praesentium iusto laudantium natus officia? Enim officia magni consequuntur repellendus blanditiis perferendis!
+                </div>
+                <div v-if="vacancy.Description" class="sr_search-results-list--overlay-right" v-html="vacancy.Description"></div>
+            </div>
+        </li>
+    </ul>
+    <a v-if="showLoadButton" @click="showMore(filteredVacancyArr.length)" type="btn" class="sr_load-more-btn">Load More</a>
+</div>
+ 

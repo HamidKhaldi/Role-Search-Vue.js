@@ -1,0 +1,60 @@
+<div class="sr_mobile-navigation" v-if="mobileView">
+    <div class="sr_home-nav-top">
+        <a href="https://www.ey.com/en_uk" class="sr_ey-logo-link">
+            <img src="../../assets/Images/ey-logo-white.png" alt="ey logo icon" class="sr_navigation-logo-img">
+        </a>
+        <div class="sr_home-nav-right-cont">
+            <a href="https://www.ey.com/en_uk" class="sr_home-search-link">
+                <img src="../../assets/Images/search.png" alt="search icon" class="sr_icon-nav-list--img">
+            </a>
+            <div class="sr_home-nav-separator"></div> 
+            <div class="sr_ham-menu-cont">
+                <nav class="sr_ham-menu-toggle-cont">
+                    <a @click="openMenu" class="sr_ham-menu-toggle--tablet" id="menuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+                    <div class="sr_popout-menu">
+                        <ul class="sr_main-nav-list" active-nav>
+                            <li class="sr_main-nav-listitem">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-anchor">Insights</a>
+                            </li>
+                            <li class="sr_main-nav-listitem">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-anchor">Services</a>
+                            </li>
+                            <li class="sr_main-nav-listitem">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-anchor">Industries</a>
+                            </li>
+                            <li class="sr_main-nav-listitem">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-anchor">Careers</a>
+                            </li>
+                            <li class="sr_main-nav-listitem">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-anchor">About us</a>
+                            </li>
+                        </ul>
+                        <ul class="sr_main-nav-bottom-list">
+                            <li class="sr_main-nav-bottom-list--item">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-bottom-list--link">
+                                    <img src="../../assets/Images/globe.png" alt="globe icon" class="sr_main-nav-bottom-list--img">
+                                    <span class="sr_main-nav-bottom-list--span">United Kingdom English</span>
+                                    <img src="../../assets/Images/keyboard_arrow_down.png" alt="arrow icon" class="sr_main-nav-bottom-list--img sr_main-nav-bottom-list--arrow">
+                                </a>
+                            </li>
+                            <li class="sr_main-nav-bottom-list--item">
+                                <a href="https://www.ey.com/en_uk" class="sr_main-nav-bottom-list--link">
+                                    <img src="../../assets/Images/person_outline.png" alt="person icon" class="sr_main-nav-bottom-list--img">
+                                    <span class="sr_main-nav-bottom-list--span">My EY</span>
+                                </a>
+                            </li>
+                        </ul> 
+                    </div> 
+                </nav>
+            </div>
+            <a @click="closeMenu" href="https://www.ey.com/en_uk" class="sr_nav-list-close-link hide-button">
+                <img src="../../assets/Images/close-menu-white.png" alt="close icon" class="sr_nav-list-close-img">
+            </a>  
+        </div>   
+    </div>   
+</div>

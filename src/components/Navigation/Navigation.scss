@@ -1,0 +1,102 @@
+.sr_navigation{
+    display: flex;
+    justify-content: space-between;
+    background-color: $eyOffBlack;
+    padding: 1rem 2rem 0 1.5rem;
+
+    &--left-cont{
+        flex-basis: 660px;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+    &--right-cont{
+        flex-basis: 16%;
+
+        @include mq($from: desktopWide){
+            flex-basis: 35%;
+        }
+    }
+}
+
+.sr_ey-logo-link{
+    display: block;
+    flex-basis: 11%;
+    height: auto;
+    margin-right: 3rem;
+}
+
+.sr_navigation-list{
+    list-style: none;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 15px 0 0;
+    margin: 0;
+    
+
+    &--item{
+        margin-right: 1.5rem;
+        padding: 0 10px 18px;
+        border-bottom: 4px solid $eyOffBlack;
+
+        &:hover{
+            border-color: $eyYellow;
+        }
+    }
+
+    &--link{
+        text-decoration: none;
+        color: $white;
+        font-size: 14px;
+    }
+}
+
+.sr_icon-nav-list{
+    list-style: none;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 15px 0 0;
+    margin: 0;
+    
+    &--item{
+        margin-right: 1.2rem;
+        padding: 0 10px 18px;
+        border-bottom: 4px solid $eyOffBlack;
+        flex-basis: 100px;
+
+        @include mq($from: desktopWide){
+            flex-basis: auto;
+        }
+
+        &:hover{
+            border-color: $eyYellow;
+        }
+    }
+
+    &--img{
+        width: 28px;
+        height: 28px;
+        margin: 0 auto;
+    }
+
+    &--link{
+        text-decoration: none;
+        color: $white;
+        display: flex;
+        flex-wrap: nowrap;
+        font-size: 14px;
+    }
+
+    &--span{
+        display: none;
+
+        @include mq($from: desktopWide){
+            display: block;
+            margin: 0 5px;
+            padding-top: 3px;
+        }
+    }
+}
